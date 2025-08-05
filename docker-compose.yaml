@@ -1,0 +1,62 @@
+x-common: &common-setup
+  image: harbor.pg.innopolis.university/sim_overlord100/simoverlord:0.0.1
+  privileged: true
+  volumes: 
+    - .:/home/ws/src:rw
+    - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    - /dev/dri:/dev/dri:rw
+  environment:
+    - "DISPLAY"
+    - "QT_X11_NO_MITSHM=1"
+  ports:
+    - "9090:9090"
+  entrypoint: >
+    bash -c "
+      /home/ws/src/startup.bash && /bin/bash
+    "
+
+services:
+  terminal:
+    # Enter the terminal in /home/ws/src directory
+    <<: *common-setup
+    stdin_open: true  # docker run -i
+    tty: true        # docker run -t
+    working_dir: /home/ws
+    command: []
+
+  simulator:
+    <<: *common-setup
+    # Build the project with `colcon build` from /home/ws/src, source the project and run simulator
+    working_dir: /home/ws/src
+    stdin_open: true  # docker run -i
+    tty: true        # docker run -t
+    entrypoint: >
+      bash -c "
+        bash /home/ws/src/startup.bash &&
+        echo 'Starting' &&
+        cd /home/ws &&
+        source /opt/ros/humble/setup.bash &&
+        colcon build &&
+        source install/setup.bash &&
+        ros2 launch overlord100 sim.launch.py
+      "
+
+  hardware:
+    <<: *common-setup
+    # Build the project with `colcon build` from /home/ws/src, source the project and run hardware setup
+    working_dir: /home/ws/src
+    environment:
+      - "ROS_AUTOMATIC_DISCOVERY_RANGE=LOCALHOST"
+      - "ROS_DOMAIN_ID=42"
+      - "PATH=/home/$USERNAME/.local/bin:$PATH"
+      - "SHELL=/bin/bash"
+    command: >
+      /bin/bash -c "
+        cd /home/ws &&
+        colcon build &&
+        source install/setup.bash &&
+        ros2 launch sllidar_ros2 sllidar_c1_launch.py &&
+        ros2 run ros2socketcan_bridge ros2socketcan &&
+        ros2 run zlac8015d motors_driver_node &&
+        ros2 run ads1115 battery_monitor
+      "

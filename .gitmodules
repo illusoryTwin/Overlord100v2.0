@@ -1,0 +1,18 @@
+[submodule "controller"]
+	path = controller
+	url = git@gitlab.pg.innopolis.university:mobile-platform-team/controller.git
+[submodule "slam"]
+	path = slam
+	url = git@gitlab.pg.innopolis.university:mobile-platform-team/slam.git
+[submodule "hardware"]
+	path = hardware
+	url = git@gitlab.pg.innopolis.university:mobile-platform-team/hardware.git
+[submodule "path-planner"]
+	path = path-planner
+	url = git@gitlab.pg.innopolis.university:mobile-platform-team/path-planner.git
+[submodule "simulation"]
+	path = simulation
+	url = git@gitlab.pg.innopolis.university:mobile-platform-team/simulation.git
+[submodule "overlord100-msgs"]
+	path = overlord100-msgs
+	url = git@gitlab.pg.innopolis.university:mobile-platform-team/overlord100-msgs.git
