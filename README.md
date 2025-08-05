@@ -1,10 +1,13 @@
-# Overlord100 Mobile Platform
+# ***Overlord100***
+# Autonomous Mobile Platform
 
 This repository integrates hardware, frontend, and backend modules for the Overlord100 Mobile Platform. The backend module consists of the following components:
 
 1. **Controller**: Includes the high-level controller and various infrastructure packages such as the log collector and mode switcher.
 2. **SLAM**: Provides Simultaneous Localization and Mapping functionalities.
 3. **Path Planner**: Responsible for determining the optimal path.
+
+![Demo gif](demo.gif)
 
 ## Installation & launch
 ### Docker
